@@ -170,7 +170,7 @@ const InvoiceApp = () => {
   const total = calculateTotal(invoiceData.items, invoiceData.discount);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 md:p-8 ">
       <style jsx global>{`
         @media print {
           body * {
