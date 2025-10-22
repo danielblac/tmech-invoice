@@ -198,7 +198,7 @@ const InvoiceApp = () => {
       <div className="max-w-6xl mx-auto">
         <div
           ref={contentRef}
-          className="print-area bg-white shadow-lg overflow-hidden min-h-[842] flex flex-col"
+          className="print-area bg-white shadow-lg overflow-hidden min-h-[279mm] flex flex-col"
         >
           {/* Header */}
           <div className="relative">
