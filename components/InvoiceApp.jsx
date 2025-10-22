@@ -436,7 +436,7 @@ const InvoiceApp = () => {
 
             <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
               {/* Basic Info */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
                 <div>
                   <label className="block text-sm font-semibold mb-2">
                     Invoice No
@@ -452,19 +452,6 @@ const InvoiceApp = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold mb-2">
-                    Due Date
-                  </label>
-                  <input
-                    type="text"
-                    value={editData.dueDate}
-                    onChange={(e) =>
-                      setEditData({ ...editData, dueDate: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-2">
                     Invoice Date
                   </label>
                   <input
@@ -472,6 +459,19 @@ const InvoiceApp = () => {
                     value={editData.invoiceDate}
                     onChange={(e) =>
                       setEditData({ ...editData, invoiceDate: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-2">
+                    Due Date
+                  </label>
+                  <input
+                    type="text"
+                    value={editData.dueDate}
+                    onChange={(e) =>
+                      setEditData({ ...editData, dueDate: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
