@@ -170,7 +170,7 @@ const InvoiceApp = () => {
   const total = calculateTotal(invoiceData.items, invoiceData.discount);
 
   return (
-    <div className="min-h-screen bg-gray-50 md:p-8 ">
+    <div className="min-h-screen bg-gray-50 pb-8 md:p-8  text-black">
       <style jsx global>{`
         @media print {
           body * {
@@ -198,7 +198,7 @@ const InvoiceApp = () => {
       <div className="max-w-6xl mx-auto">
         <div
           ref={contentRef}
-          className="print-area bg-white shadow-lg overflow-hidden min-h-screen flex flex-col"
+          className="print-area bg-white shadow-lg overflow-hidden min-h-[842] flex flex-col"
         >
           {/* Header */}
           <div className="relative">
