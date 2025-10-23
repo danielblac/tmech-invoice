@@ -181,10 +181,12 @@ const InvoiceApp = () => {
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
+            right: 0 !important; /* ADDED THIS LINE */
             width: 100% !important;
             margin: 0 !important;
             padding: 0 !important;
             background: white !important;
+            box-shadow: none !important; /* ADDED THIS LINE */
           }
 
           /* Force white background */
@@ -194,6 +196,7 @@ const InvoiceApp = () => {
             margin: 0 !important;
             padding: 0 !important;
             height: auto !important;
+            width: 100% !important;
           }
 
           /* Hide buttons and modal */
@@ -249,10 +252,15 @@ const InvoiceApp = () => {
 
           /* Ensure proper sizing */
           .print-container {
-            width: 210mm !important;
+            width: 100% !important;
             min-height: 297mm !important;
             max-height: 297mm !important;
             overflow: hidden !important;
+          }
+
+          .print-area .relative > div {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
           }
         }
       `}</style>
