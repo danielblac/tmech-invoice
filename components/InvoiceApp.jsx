@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from "react";
 import { X, Plus, Trash2, Printer, Edit } from "lucide-react";
 import Image from "next/image";
-import { useReactToPrint } from "react-to-print";
 
 const InvoiceApp = () => {
   const initialInvoiceData = {
@@ -41,7 +40,7 @@ const InvoiceApp = () => {
   const [editData, setEditData] = useState(null);
 
   useEffect(() => {
-    const savedData = localStorage.getItem("tmech_invoice_data");
+    const savedData = sessionStorage.getItem("tmech_invoice_data");
     if (savedData) {
       setInvoiceData(JSON.parse(savedData));
     }
@@ -69,29 +68,9 @@ const InvoiceApp = () => {
     })}`;
   };
 
-  // const handlePrint = useReactToPrint({
-  //   content: () => contentRef.current,
-  //   documentTitle: "Your Document Name",
-  //   pageStyle: `
-  //     @page {
-  //       size: auto;
-  //       margin: 0mm;
-  //     }
-  //     @media print {
-  //       body {
-  //         -webkit-print-color-adjust: exact;
-  //         print-color-adjust: exact;
-  //         color-adjust: exact;
-  //       }print-container
-  //       * {
-  //         margin: 0 !important;
-  //         padding: 0 !important;
-  //       }
-  //     }
-  //   `,
-  // });
-
-  const handlePrint = useReactToPrint({ contentRef });
+  const handlePrint = () => {
+    window.print();
+  };
 
   const handleEditClick = () => {
     setEditData(JSON.parse(JSON.stringify(invoiceData)));
@@ -100,7 +79,7 @@ const InvoiceApp = () => {
 
   const handleSave = () => {
     setInvoiceData(editData);
-    localStorage.setItem("tmech_invoice_data", JSON.stringify(editData));
+    sessionStorage.setItem("tmech_invoice_data", JSON.stringify(editData));
     setIsEditModalOpen(false);
   };
 
@@ -170,27 +149,110 @@ const InvoiceApp = () => {
   const total = calculateTotal(invoiceData.items, invoiceData.discount);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-8 md:p-8  text-black">
+    <div className="min-h-screen bg-gray-50 pb-8 md:p-8">
       <style jsx global>{`
         @media print {
-          body * {
-            visibility: hidden;
+          /* Force exact color printing for iOS */
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
           }
+
+          /* Remove all default page margins */
+          @page {
+            margin: 0 !important;
+            padding: 0 !important;
+            size: A4 portrait;
+          }
+
+          /* Hide everything except print area */
+          body * {
+            visibility: hidden !important;
+          }
+
           .print-area,
           .print-area * {
-            visibility: visible;
+            visibility: visible !important;
           }
+
+          /* Position print area */
           .print-area {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
           }
+
+          /* Force white background */
+          html,
+          body {
+            background: white !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            height: auto !important;
+          }
+
+          /* Hide buttons and modal */
           .no-print {
             display: none !important;
+            visibility: hidden !important;
           }
-          .bg-gray-50 {
-            background: white !important;
+
+          /* Force black text color for iOS Safari */
+          .force-black-text {
+            color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
+          }
+
+          .force-blue-text {
+            color: #172554 !important;
+            -webkit-text-fill-color: #172554 !important;
+          }
+
+          .force-red-text {
+            color: #dc2626 !important;
+            -webkit-text-fill-color: #dc2626 !important;
+          }
+
+          /* Ensure backgrounds print */
+          .print-bg-black {
+            background-color: #000000 !important;
+            background: #000000 !important;
+          }
+
+          .print-bg-red {
+            background-color: #dc2626 !important;
+            background: #dc2626 !important;
+          }
+
+          .print-bg-blue {
+            background-color: #172554 !important;
+            background: #172554 !important;
+          }
+
+          /* Prevent page breaks */
+          .print-area {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+          }
+
+          /* Remove any container padding/margin */
+          .max-w-6xl {
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+
+          /* Ensure proper sizing */
+          .print-container {
+            width: 210mm !important;
+            min-height: 297mm !important;
+            max-height: 297mm !important;
+            overflow: hidden !important;
           }
         }
       `}</style>
@@ -198,13 +260,13 @@ const InvoiceApp = () => {
       <div className="max-w-6xl mx-auto">
         <div
           ref={contentRef}
-          className="print-area bg-white shadow-lg overflow-hidden min-h-[279mm] flex flex-col"
+          className="print-area print-container bg-white shadow-lg overflow-hidden flex flex-col"
         >
           {/* Header */}
           <div className="relative">
-            <div className="absolute top-0 right-0 w-full h-8 bg-black"></div>
+            <div className="absolute top-0 right-0 w-full h-8 bg-black print-bg-black"></div>
             <div
-              className="absolute top-0 left-0 w-56 h-12 bg-red-600"
+              className="absolute top-0 left-0 w-56 h-12 bg-red-600 print-bg-red"
               style={{ clipPath: "polygon(0 0, 100% 0, 85% 100%, 0 100%)" }}
             ></div>
           </div>
@@ -224,7 +286,7 @@ const InvoiceApp = () => {
                     height={446}
                   />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1 force-black-text">
                   <p>
                     <strong>Address:</strong> 72, Ojuelegba road, beside GT
                     Bank, Lagos
@@ -238,8 +300,10 @@ const InvoiceApp = () => {
                 </div>
               </div>
               <div className="text-right">
-                <h2 className="text-5xl font-bold mb-2">INVOICE</h2>
-                <div className="space-y-1">
+                <h2 className="text-5xl font-bold mb-2 force-black-text">
+                  INVOICE
+                </h2>
+                <div className="space-y-1 force-black-text">
                   <p>
                     <strong>Invoice No:</strong> {invoiceData.invoiceNo}
                   </p>
@@ -251,13 +315,15 @@ const InvoiceApp = () => {
                   </p>
                 </div>
                 <div className="mt-6">
-                  <p className="text-sm font-semibold text-gray-600 mb-1">
+                  <p className="text-sm font-semibold text-gray-600 mb-1 force-black-text">
                     BILL TO
                   </p>
-                  <p className="text-2xl font-bold">
+                  <p className="text-2xl font-bold force-black-text">
                     {invoiceData.billTo.name}
                   </p>
-                  <p className="text-gray-700">{invoiceData.billTo.address}</p>
+                  <p className="text-gray-700 force-black-text">
+                    {invoiceData.billTo.address}
+                  </p>
                 </div>
               </div>
             </div>
@@ -266,31 +332,34 @@ const InvoiceApp = () => {
             <div className="px-6">
               <table className="w-full border-t border-red-600">
                 <thead>
-                  <tr className="border-b border-red-600">
-                    <th className="text-left pt-3 pb-2 font-bold">
+                  <tr className="border-b border-red-600 text-blue-950 force-blue-text">
+                    <th className="text-left pt-3 pb-2 font-bold force-black-text">
                       DESCRIPTION
                     </th>
-                    <th className="text-center pt-3 pb-2 font-bold">PRICE</th>
-                    <th className="text-center pt-3 pb-2 font-bold">QTY</th>
-                    <th className="text-right pt-3 pb-2 font-bold">SUBTOTAL</th>
+                    <th className="text-center pt-3 pb-2 font-bold force-black-text">
+                      PRICE
+                    </th>
+                    <th className="text-center pt-3 pb-2 font-bold force-black-text">
+                      QTY
+                    </th>
+                    <th className="text-right pt-3 pb-2 font-bold force-black-text">
+                      SUBTOTAL
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {invoiceData.items.map((item, index) => (
-                    <tr
-                      key={item.id}
-                      // className={
-                      //   index !== invoiceData.items.length - 1
-                      //     ? "border-b border-gray-200"
-                      //     : ""
-                      // }
-                    >
-                      <td className="py-2">{item.description}</td>
-                      <td className="py-2 text-center">
+                  {invoiceData.items.map((item) => (
+                    <tr key={item.id}>
+                      <td className="py-2 force-black-text">
+                        {item.description}
+                      </td>
+                      <td className="py-2 text-center force-black-text">
                         ₦{item.price.toLocaleString()}
                       </td>
-                      <td className="py-2 text-center">{item.qty}</td>
-                      <td className="py-2 text-right font-semibold">
+                      <td className="py-2 text-center force-black-text">
+                        {item.qty}
+                      </td>
+                      <td className="py-2 text-right font-semibold force-black-text">
                         ₦
                         {calculateLineTotal(
                           item.price,
@@ -304,27 +373,31 @@ const InvoiceApp = () => {
 
               <div className="mt-6 flex justify-between">
                 <div>
-                  <p className="font-bold mb-3">Custom Information:</p>
+                  <p className="font-bold mb-3 text-blue-950 force-blue-text">
+                    Custom Information:
+                  </p>
                   <div className="space-y-1">
                     {invoiceData.customInfo.map((info, index) => (
-                      <p key={index}>{info}</p>
+                      <p key={index} className="force-black-text">
+                        {info}
+                      </p>
                     ))}
                   </div>
                 </div>
                 <div className="w-80">
-                  <div className="flex justify-between py-2">
+                  <div className="flex justify-between py-2 text-blue-950 force-blue-text">
                     <span>Sub-total :</span>
                     <span className="font-semibold">
                       {formatCurrency(subtotal)}
                     </span>
                   </div>
-                  <div className="flex justify-between py-2">
+                  <div className="flex justify-between py-2 text-blue-950 force-blue-text">
                     <span>Discount :</span>
                     <span className="font-semibold">
                       {formatCurrency(invoiceData.discount)}
                     </span>
                   </div>
-                  <div className="flex justify-between text-lg py-3 px-2 bg-blue-950 text-white font-bold rounded">
+                  <div className="flex justify-between text-lg py-3 px-2 bg-blue-950 print-bg-blue text-white font-bold rounded">
                     <span>Total :</span>
                     <span>{formatCurrency(total)}</span>
                   </div>
@@ -334,9 +407,11 @@ const InvoiceApp = () => {
 
             {/* Terms */}
             <div className="px-6 pt-8 pb-2 flex gap-12">
-              <div className="flex-1">
-                <h3 className="font-bold mb-3">PAYMENT METHOD</h3>
-                <div className="space-y-1 text-sm">
+              <div className="w-[40%]">
+                <h3 className="font-bold mb-3 text-blue-950 force-blue-text">
+                  PAYMENT METHOD
+                </h3>
+                <div className="space-y-1 force-black-text">
                   <p>
                     <strong>Account No:</strong> 7825836128
                   </p>
@@ -347,8 +422,8 @@ const InvoiceApp = () => {
                     <strong>Bank Name:</strong> Pocket App
                   </p>
                 </div>
-                <div className="mt-4 space-y-1 text-sm">
-                  <p className="font-bold">ATLERNATE ACCOUNT</p>
+                <div className="mt-4 space-y-1 force-black-text">
+                  <p className="font-bold text-sm">ALTERNATE ACCOUNT</p>
                   <p>
                     <strong>Account No:</strong> 1006027241
                   </p>
@@ -360,15 +435,17 @@ const InvoiceApp = () => {
                   </p>
                 </div>
                 <div className="mt-4 text-sm">
-                  <p className="font-bold text-red-600">NOTE:</p>
-                  <p className="font-bold">THIS INVOICE IS VALID FOR 30 DAYS</p>
+                  <p className="font-bold text-red-600 force-red-text">NOTE:</p>
+                  <p className="font-bold force-black-text text-lg text-blue-950 force-blue-text">
+                    THIS INVOICE IS VALID FOR 30 DAYS
+                  </p>
                 </div>
               </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-red-600 mb-3">
+              <div className="w-[60%]">
+                <h3 className="font-bold text-red-600 mb-3 force-red-text">
                   TERMS AND CONDITIONS
                 </h3>
-                <ol className="space-y-2 text-sm list-decimal list-inside">
+                <ol className="space-y-2 list-decimal list-inside force-black-text">
                   <li>Payment Validates Order</li>
                   <li>
                     Minimum of 80% initial payment of the total charge required
@@ -390,12 +467,12 @@ const InvoiceApp = () => {
 
           {/* Footer */}
           <div className="relative pt-2 mt-auto">
-            <div className="absolute bottom-0 left-0 w-full h-8 bg-black"></div>
+            <div className="absolute bottom-0 left-0 w-full h-8 bg-black print-bg-black"></div>
             <div
-              className="absolute bottom-0 right-0 w-48 h-12 bg-red-600"
+              className="absolute bottom-0 right-0 w-56 h-12 bg-red-600 print-bg-red"
               style={{ clipPath: "polygon(15% 0, 100% 0, 100% 100%, 0 100%)" }}
             ></div>
-            <p className="px-6 pb-8 font-semibold">
+            <p className="px-6 pb-8 font-semibold text-lg text-blue-950 force-blue-text">
               THANK YOU FOR YOUR BUSINESS
             </p>
           </div>
@@ -411,7 +488,7 @@ const InvoiceApp = () => {
             Edit Invoice
           </button>
           <button
-            onClick={() => handlePrint()}
+            onClick={handlePrint}
             className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold"
           >
             <Printer size={20} />
@@ -436,7 +513,7 @@ const InvoiceApp = () => {
 
             <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
               {/* Basic Info */}
-              <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div>
                   <label className="block text-sm font-semibold mb-2">
                     Invoice No
@@ -533,7 +610,7 @@ const InvoiceApp = () => {
                   </button>
                 </div>
                 <div className="space-y-3">
-                  {editData.items.map((item, index) => (
+                  {editData.items.map((item) => (
                     <div
                       key={item.id}
                       className="p-4 border border-gray-200 rounded-lg"
