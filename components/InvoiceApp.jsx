@@ -6,8 +6,8 @@ import Image from "next/image";
 const InvoiceApp = () => {
   const initialInvoiceData = {
     invoiceNo: "TMECH0199",
-    dueDate: "14 Oct, 2025",
-    invoiceDate: "04 Nov, 2025",
+    invoiceDate: "14 Oct, 2025",
+    dueDate: "04 Nov, 2025",
     billTo: {
       name: "FROSHTECH ACADEMY",
       address: "km 16, Jakande bustop Lekki, Lagos",
@@ -308,10 +308,10 @@ const InvoiceApp = () => {
                     <strong>Invoice No:</strong> {invoiceData.invoiceNo}
                   </p>
                   <p>
-                    <strong>Due Date:</strong> {invoiceData.dueDate}
+                    <strong>Invoice Date:</strong> {invoiceData.invoiceDate}
                   </p>
                   <p>
-                    <strong>Invoice Date:</strong> {invoiceData.invoiceDate}
+                    <strong>Due Date:</strong> {invoiceData.dueDate}
                   </p>
                 </div>
                 <div className="mt-6">
