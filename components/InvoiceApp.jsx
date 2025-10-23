@@ -265,7 +265,7 @@ const InvoiceApp = () => {
         }
       `}</style>
 
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto text-black">
         <div
           ref={contentRef}
           className="print-area print-container bg-white shadow-lg overflow-hidden flex flex-col"
