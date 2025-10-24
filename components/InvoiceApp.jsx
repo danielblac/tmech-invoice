@@ -27,6 +27,7 @@ const InvoiceApp = () => {
       },
     ],
     discount: 0,
+    deliveryFee: 0,
     customInfo: [
       "Delivery fee = on the client",
       "Fabric color = Navy Blue and Maroon",
@@ -57,8 +58,8 @@ const InvoiceApp = () => {
     );
   };
 
-  const calculateTotal = (items, discount) => {
-    return calculateSubtotal(items) - discount;
+  const calculateTotal = (items, discount, deliveryFee) => {
+    return calculateSubtotal(items) - discount + deliveryFee;
   };
 
   const formatCurrency = (amount) => {
@@ -146,7 +147,11 @@ const InvoiceApp = () => {
   };
 
   const subtotal = calculateSubtotal(invoiceData.items);
-  const total = calculateTotal(invoiceData.items, invoiceData.discount);
+  const total = calculateTotal(
+    invoiceData.items,
+    invoiceData.discount,
+    invoiceData.deliveryFee
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 pb-8 md:p-8">
@@ -408,7 +413,7 @@ const InvoiceApp = () => {
                 </tbody>
               </table>
 
-              <div className="mt-6 flex justify-between">
+              <div className="mt-3 flex justify-between">
                 <div>
                   <p className="font-bold mb-3 text-blue-950 force-blue-text">
                     Custom Information:
@@ -432,6 +437,12 @@ const InvoiceApp = () => {
                     <span>Discount :</span>
                     <span className="font-semibold">
                       {formatCurrency(invoiceData.discount)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between py-2 text-blue-950 force-blue-text">
+                    <span>Delivery Fee :</span>
+                    <span className="font-semibold">
+                      {formatCurrency(invoiceData.deliveryFee)}
                     </span>
                   </div>
                   <div className="flex justify-between text-lg py-3 px-2 bg-blue-950 print-bg-blue text-white font-bold rounded">
@@ -482,7 +493,9 @@ const InvoiceApp = () => {
                 <h3 className="font-bold text-red-600 mb-3 force-red-text">
                   TERMS AND CONDITIONS
                 </h3>
-                <ol className="space-y-2 list-inside force-black-text" /* list-decimal */>
+                <ol
+                  className="space-y-2 list-inside force-black-text" /* list-decimal */
+                >
                   <li>Payment Validates Order</li>
                   <li>
                     Minimum of 80% initial payment of the total charge required
@@ -747,6 +760,23 @@ const InvoiceApp = () => {
                 />
               </div>
 
+              <div>
+                <label className="block text-sm font-semibold mb-2">
+                  Delivery Fee (₦)
+                </label>
+                <input
+                  type="number"
+                  value={editData.deliveryFee}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      deliveryFee: Number(e.target.value) || 0,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
               {/* Totals Display */}
               <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                 <div className="flex justify-between text-sm">
@@ -758,6 +788,10 @@ const InvoiceApp = () => {
                 <div className="flex justify-between text-sm">
                   <span className="font-semibold">Discount:</span>
                   <span>{formatCurrency(editData.discount)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">Delivery Fee:</span>
+                  <span>{formatCurrency(editData.deliveryFee)}</span>
                 </div>
                 <div className="flex justify-between text-lg font-bold border-t pt-2">
                   <span>Total:</span>
