@@ -343,7 +343,7 @@ const InvoiceApp = () => {
                 </div>
               </div>
               <div className="text-right">
-                <h2 className="text-5xl font-bold mb-2 force-black-text">
+                <h2 className="text-5xl font-bold mb-2 text-blue-950 force-blue-text">
                   INVOICE
                 </h2>
                 <div className="space-y-1 force-black-text">
@@ -376,18 +376,12 @@ const InvoiceApp = () => {
               <table className="w-full border-t border-red-600">
                 <thead>
                   <tr className="border-b border-red-600 text-blue-950 force-blue-text">
-                    <th className="text-left pt-3 pb-2 font-bold force-black-text">
+                    <th className="text-left pt-3 pb-2 font-bold">
                       DESCRIPTION
                     </th>
-                    <th className="text-center pt-3 pb-2 font-bold force-black-text">
-                      PRICE
-                    </th>
-                    <th className="text-center pt-3 pb-2 font-bold force-black-text">
-                      QTY
-                    </th>
-                    <th className="text-right pt-3 pb-2 font-bold force-black-text">
-                      SUBTOTAL
-                    </th>
+                    <th className="text-center pt-3 pb-2 font-bold">PRICE</th>
+                    <th className="text-center pt-3 pb-2 font-bold">QTY</th>
+                    <th className="text-right pt-3 pb-2 font-bold">SUBTOTAL</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -450,7 +444,7 @@ const InvoiceApp = () => {
 
             {/* Terms */}
             <div className="px-6 pt-8 pb-2 flex gap-12">
-              <div className="w-[40%]">
+              <div className="flex-1">
                 <h3 className="font-bold mb-3 text-blue-950 force-blue-text">
                   PAYMENT METHOD
                 </h3>
@@ -484,11 +478,11 @@ const InvoiceApp = () => {
                   </p>
                 </div>
               </div>
-              <div className="w-[60%]">
+              <div className="flex-1 text-right">
                 <h3 className="font-bold text-red-600 mb-3 force-red-text">
                   TERMS AND CONDITIONS
                 </h3>
-                <ol className="space-y-2 list-decimal list-inside force-black-text">
+                <ol className="space-y-2 list-inside force-black-text" /* list-decimal */>
                   <li>Payment Validates Order</li>
                   <li>
                     Minimum of 80% initial payment of the total charge required
