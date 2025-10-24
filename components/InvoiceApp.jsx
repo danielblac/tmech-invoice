@@ -263,6 +263,41 @@ const InvoiceApp = () => {
             margin-right: 0 !important;
           }
         }
+
+        .no-print input,
+        .no-print textarea,
+        .no-print label,
+        .no-print h2,
+        .no-print h3,
+        .no-print span,
+        .no-print p,
+        .no-print button {
+          color: #000000 !important;
+          -webkit-text-fill-color: #000000 !important;
+        }
+
+        .no-print input::placeholder {
+          color: #9ca3af !important;
+          -webkit-text-fill-color: #9ca3af !important;
+        }
+
+        /* Ensure white text stays white on colored buttons */
+        .no-print button.bg-blue-600,
+        .no-print button.bg-green-600,
+        .no-print button.bg-red-600 {
+          color: #ffffff !important;
+          -webkit-text-fill-color: #ffffff !important;
+        }
+
+        .no-print .text-gray-500 {
+          color: #6b7280 !important;
+          -webkit-text-fill-color: #6b7280 !important;
+        }
+
+        .no-print .text-red-600 {
+          color: #dc2626 !important;
+          -webkit-text-fill-color: #dc2626 !important;
+        }
       `}</style>
 
       <div className="max-w-6xl mx-auto text-black">
