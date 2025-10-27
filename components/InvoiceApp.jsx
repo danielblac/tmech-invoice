@@ -489,13 +489,11 @@ const InvoiceApp = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex-1 text-right">
+              <div className="flex-1">
                 <h3 className="font-bold text-red-600 mb-3 force-red-text">
                   TERMS AND CONDITIONS
                 </h3>
-                <ol
-                  className="space-y-2 list-inside force-black-text" /* list-decimal */
-                >
+                <ol className="space-y-2 list-inside list-decimal force-black-text text-justify">
                   <li>Payment Validates Order</li>
                   <li>
                     Minimum of 80% initial payment of the total charge required
