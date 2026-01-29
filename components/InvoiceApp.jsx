@@ -574,7 +574,7 @@ const InvoiceApp = () => {
           </div>
 
           {/* Footer */}
-          <div className="bg-blue-950 print-bg-blue px-8 py-4 text-center mt-4">
+          <div className="bg-blue-950 print-bg-blue px-8 py-4 text-center mt-2">
             <p className="font-bold text-sm text-white tracking-wide">
               THANK YOU FOR YOUR BUSINESS
             </p>
