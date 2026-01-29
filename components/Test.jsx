@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { X, Plus, Trash2, Printer, Edit } from "lucide-react";
 import Image from "next/image";
 
-const InvoiceApp = () => {
+const Test = () => {
   const initialInvoiceData = {
     invoiceNo: "TMECH0199",
     invoiceDate: "14 Oct, 2025",
@@ -54,19 +54,12 @@ const InvoiceApp = () => {
   const calculateSubtotal = (items) => {
     return items.reduce(
       (sum, item) => sum + calculateLineTotal(item.price, item.qty),
-      0,
+      0
     );
   };
 
-  const calculateVAT = (subtotal, discount, deliveryFee) => {
-    const taxableAmount = subtotal - discount + deliveryFee;
-    return taxableAmount * 0.075; // 7.5% VAT
-  };
-
   const calculateTotal = (items, discount, deliveryFee) => {
-    const subtotal = calculateSubtotal(items);
-    const vat = calculateVAT(subtotal, discount, deliveryFee);
-    return subtotal - discount + deliveryFee + vat;
+    return calculateSubtotal(items) - discount + deliveryFee;
   };
 
   const formatCurrency = (amount) => {
@@ -125,7 +118,7 @@ const InvoiceApp = () => {
                   ? Number(value) || 0
                   : value,
             }
-          : item,
+          : item
       ),
     });
   };
@@ -154,19 +147,14 @@ const InvoiceApp = () => {
   };
 
   const subtotal = calculateSubtotal(invoiceData.items);
-  const vat = calculateVAT(
-    subtotal,
-    invoiceData.discount,
-    invoiceData.deliveryFee,
-  );
   const total = calculateTotal(
     invoiceData.items,
     invoiceData.discount,
-    invoiceData.deliveryFee,
+    invoiceData.deliveryFee
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 text-black">
+    <div className="min-h-screen bg-gray-50 pb-8 md:p-8">
       <style jsx global>{`
         @media print {
           /* Force exact color printing for iOS */
@@ -180,6 +168,7 @@ const InvoiceApp = () => {
           @page {
             margin: 0 !important;
             padding: 0 !important;
+            size: A4 portrait;
           }
 
           /* Hide everything except print area */
@@ -225,16 +214,6 @@ const InvoiceApp = () => {
           .force-black-text {
             color: #000000 !important;
             -webkit-text-fill-color: #000000 !important;
-          }
-
-          .force-gray-text {
-            color: #101828 !important;
-            -webkit-text-fill-color: #101828 !important;
-          }
-
-          .force-light-gray-text {
-            color: #4a5565 !important;
-            -webkit-text-fill-color: #4a5565 !important;
           }
 
           .force-blue-text {
@@ -326,17 +305,24 @@ const InvoiceApp = () => {
         }
       `}</style>
 
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto text-black">
         <div
           ref={contentRef}
-          className="print-area bg-white shadow-lg min-h-[279mm] flex flex-col"
+          className="print-area print-container bg-white shadow-lg overflow-hidden flex flex-col"
         >
-          {/* Modern Clean Header */}
-          <div className="px-8 pt-8 pb-2 border-b-2 border-red-200">
-            <div className="flex justify-between items-start mb-6">
-              {/* Logo and Company Info */}
+          {/* Header */}
+          <div className="relative">
+            <div className="absolute top-0 right-0 w-full h-8 bg-black print-bg-black"></div>
+            <div
+              className="absolute top-0 left-0 w-56 h-12 bg-red-600 print-bg-red"
+              style={{ clipPath: "polygon(0 0, 100% 0, 85% 100%, 0 100%)" }}
+            ></div>
+          </div>
+
+          <main className="flex-1">
+            <div className="px-6 pt-12 pb-6 flex justify-between items-start">
               <div>
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-4 mb-2">
                   <Image
                     src="/images/t.mech-logo.jpg"
                     alt="T.Mech Exclusive Logo"
@@ -348,212 +334,166 @@ const InvoiceApp = () => {
                     height={446}
                   />
                 </div>
-                <div className="space-y-1 text-sm">
+                <div className="space-y-1 force-black-text">
                   <p>
-                    <strong className="text-gray-900 force-gray-text">
-                      Address:
-                    </strong>{" "}
-                    72, Ojuelegba road, beside GT Bank, Lagos
+                    <strong>Address:</strong> 72, Ojuelegba road, beside GT
+                    Bank, Lagos
                   </p>
                   <p>
-                    <strong className="text-gray-900 force-gray-text">
-                      Email:
-                    </strong>{" "}
-                    taylor.mechanic018@gmail.com
+                    <strong>Email:</strong> taylor.mechanic018@gmail.com
                   </p>
                   <p>
-                    <strong className="text-gray-900 force-gray-text">
-                      Phone:
-                    </strong>{" "}
-                    +2349057336051
+                    <strong>Phone:</strong> +2349057336051
                   </p>
                 </div>
               </div>
-
-              {/* Invoice Title and Details */}
               <div className="text-right">
-                <h1 className="text-5xl font-bold mb-2 text-blue-950 force-blue-text">
+                <h2 className="text-5xl font-bold mb-2 text-blue-950 force-blue-text">
                   INVOICE
-                </h1>
-                <div className="space-y-2 text-sm">
-                  <p className="text-gray-600 force-light-gray-text">
-                    <span className="font-semibold text-gray-900 force-gray-text">
-                      Invoice No:
-                    </span>{" "}
-                    {invoiceData.invoiceNo}
+                </h2>
+                <div className="space-y-1 force-black-text">
+                  <p>
+                    <strong>Invoice No:</strong> {invoiceData.invoiceNo}
                   </p>
-                  <p className="text-gray-600 force-light-gray-text">
-                    <span className="font-semibold text-gray-900 force-gray-text">
-                      Invoice Date:
-                    </span>{" "}
-                    {invoiceData.invoiceDate}
+                  <p>
+                    <strong>Invoice Date:</strong> {invoiceData.invoiceDate}
                   </p>
-                  <p className="text-gray-600 force-light-gray-text">
-                    <span className="font-semibold text-gray-900 force-gray-text">
-                      Due Date:
-                    </span>{" "}
-                    {invoiceData.dueDate}
+                  <p>
+                    <strong>Due Date:</strong> {invoiceData.dueDate}
                   </p>
                 </div>
                 <div className="mt-6">
-                  <p className="text-xs font-semibold text-gray-600 mb-1 force-black-text">
+                  <p className="text-sm font-semibold text-gray-600 mb-1 force-black-text">
                     BILL TO
                   </p>
-                  <p className="text-xl font-bold force-black-text">
+                  <p className="text-2xl font-bold force-black-text">
                     {invoiceData.billTo.name}
                   </p>
-                  <p className="text-gray-700 force-black-text text-sm">
+                  <p className="text-gray-700 force-black-text">
                     {invoiceData.billTo.address}
                   </p>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Items Table */}
-          <div className="px-8 flex-1">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b-2 border-red-600">
-                  <th className="text-left py-3 font-bold text-sm uppercase text-blue-950 force-blue-text">
-                    Description
-                  </th>
-                  <th className="text-center py-3 font-bold text-sm uppercase text-blue-950 force-blue-text">
-                    Price
-                  </th>
-                  <th className="text-center py-3 font-bold text-sm uppercase text-blue-950 force-blue-text">
-                    Qty
-                  </th>
-                  <th className="text-right py-3 font-bold text-sm uppercase text-blue-950 force-blue-text">
-                    Subtotal
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoiceData.items.map((item) => (
-                  <tr key={item.id} className="border-b border-gray-200">
-                    <td className="py-4 text-gray-900 force-gray-text">
-                      {item.description}
-                    </td>
-                    <td className="py-4 text-center text-gray-700 force-gray-text">
-                      ₦{item.price.toLocaleString()}
-                    </td>
-                    <td className="py-4 text-center text-gray-700 force-gray-text">
-                      {item.qty}
-                    </td>
-                    <td className="py-4 text-right font-semibold text-gray-900 force-gray-text">
-                      ₦
-                      {calculateLineTotal(
-                        item.price,
-                        item.qty,
-                      ).toLocaleString()}
-                    </td>
+            {/* Table */}
+            <div className="px-6">
+              <table className="w-full border-t border-red-600">
+                <thead>
+                  <tr className="border-b border-red-600 text-blue-950 force-blue-text">
+                    <th className="text-left pt-3 pb-2 font-bold">
+                      DESCRIPTION
+                    </th>
+                    <th className="text-center pt-3 pb-2 font-bold">PRICE</th>
+                    <th className="text-center pt-3 pb-2 font-bold">QTY</th>
+                    <th className="text-right pt-3 pb-2 font-bold">SUBTOTAL</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-
-            {/* Custom Info and Totals */}
-            <div className="mt-8 flex justify-between gap-8">
-              {/* Custom Information */}
-              <div className="flex-1">
-                <h3 className="font-bold text-blue-950 force-blue-text mb-3 uppercase text-sm">
-                  Custom Information
-                </h3>
-                <div className="space-y-1 text-sm text-gray-700 force-gray-text">
-                  {invoiceData.customInfo.map((info, index) => (
-                    <p key={index}>{info}</p>
+                </thead>
+                <tbody>
+                  {invoiceData.items.map((item) => (
+                    <tr key={item.id}>
+                      <td className="py-2 force-black-text">
+                        {item.description}
+                      </td>
+                      <td className="py-2 text-center force-black-text">
+                        ₦{item.price.toLocaleString()}
+                      </td>
+                      <td className="py-2 text-center force-black-text">
+                        {item.qty}
+                      </td>
+                      <td className="py-2 text-right font-semibold force-black-text">
+                        ₦
+                        {calculateLineTotal(
+                          item.price,
+                          item.qty
+                        ).toLocaleString()}
+                      </td>
+                    </tr>
                   ))}
-                </div>
-              </div>
+                </tbody>
+              </table>
 
-              {/* Totals */}
-              <div className="w-96">
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm text-blue-950 force-blue-text">
-                    <span>Sub-total:</span>
+              <div className="mt-3 flex justify-between">
+                <div>
+                  <p className="font-bold mb-3 text-blue-950 force-blue-text">
+                    Custom Information:
+                  </p>
+                  <div className="space-y-1">
+                    {invoiceData.customInfo.map((info, index) => (
+                      <p key={index} className="force-black-text">
+                        {info}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+                <div className="w-80">
+                  <div className="flex justify-between py-2 text-blue-950 force-blue-text">
+                    <span>Sub-total :</span>
                     <span className="font-semibold">
                       {formatCurrency(subtotal)}
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm text-blue-950 force-blue-text">
-                    <span>Discount:</span>
+                  <div className="flex justify-between py-2 text-blue-950 force-blue-text">
+                    <span>Discount :</span>
                     <span className="font-semibold">
                       {formatCurrency(invoiceData.discount)}
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm text-blue-950 force-blue-text">
-                    <span>Delivery Fee:</span>
+                  <div className="flex justify-between py-2 text-blue-950 force-blue-text">
+                    <span>Delivery Fee :</span>
                     <span className="font-semibold">
                       {formatCurrency(invoiceData.deliveryFee)}
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm border-t pt-3 text-blue-950 force-blue-text">
-                    <span>VAT (7.5%):</span>
-                    <span className="font-semibold">{formatCurrency(vat)}</span>
-                  </div>
-                  <div className="flex justify-between bg-blue-950 print-bg-blue text-white px-4 py-4 rounded-lg mt-3">
-                    <span className="font-bold text-base uppercase">
-                      Total:
-                    </span>
-                    <span className="text-2xl font-bold">
-                      {formatCurrency(total)}
-                    </span>
+                  <div className="flex justify-between text-lg py-3 px-2 bg-blue-950 print-bg-blue text-white font-bold rounded">
+                    <span>Total :</span>
+                    <span>{formatCurrency(total)}</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Payment and Terms */}
-            <div className="mt-6 grid grid-cols-2 gap-8">
-              {/* Payment Method */}
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <h3 className="font-bold text-blue-950 force-blue-text uppercase text-sm">
-                    Payment Method
-                  </h3>
+            {/* Terms */}
+            <div className="px-6 pt-8 pb-2 flex gap-12">
+              <div className="flex-1">
+                <h3 className="font-bold mb-3 text-blue-950 force-blue-text">
+                  PAYMENT METHOD
+                </h3>
+                <div className="space-y-1 force-black-text">
+                  <p>
+                    <strong>Account No:</strong> 7825836128
+                  </p>
+                  <p>
+                    <strong>Account Name:</strong> Imoninya Raymond
+                  </p>
+                  <p>
+                    <strong>Bank Name:</strong> Pocket App
+                  </p>
                 </div>
-                <div className="space-y-3 text-sm">
-                  <div className="space-y-1">
-                    <p className="text-gray-700 force-light-gray-text">
-                      <span className="font-semibold text-gray-900 force-gray-text">
-                        Account No:
-                      </span>{" "}
-                      6571460376
-                    </p>
-                    <p className="text-gray-700 force-light-gray-text">
-                      <span className="font-semibold text-gray-900 force-gray-text">
-                        Account Name:
-                      </span>{" "}
-                      T-MECH EXCLUSIVE SERVICES
-                    </p>
-                    <p className="text-gray-700 force-light-gray-text">
-                      <span className="font-semibold text-gray-900 force-gray-text">
-                        Bank Name:
-                      </span>{" "}
-                      MONIEPOINT
-                    </p>
-                  </div>
-
-                  <div className="pt-3 mt-22">
-                    <p className="font-bold text-red-600 mb-3 force-red-text text-xs uppercase">
-                      Note:
-                    </p>
-                    <p className="font-bold text-gray-900 mt-1">
-                      THIS INVOICE IS VALID FOR 30 DAYS
-                    </p>
-                  </div>
+                <div className="mt-4 space-y-1 force-black-text">
+                  <p className="font-bold text-sm">ALTERNATE ACCOUNT</p>
+                  <p>
+                    <strong>Account No:</strong> 1006027241
+                  </p>
+                  <p>
+                    <strong>Account Name:</strong> Imoninya Raymond
+                  </p>
+                  <p>
+                    <strong>Bank Name:</strong> VFD Microfinance bank
+                  </p>
+                </div>
+                <div className="mt-4 text-sm">
+                  <p className="font-bold text-red-600 force-red-text">NOTE:</p>
+                  <p className="font-bold force-black-text text-lg text-blue-950 force-blue-text">
+                    THIS INVOICE IS VALID FOR 30 DAYS
+                  </p>
                 </div>
               </div>
-
-              {/* Terms and Conditions */}
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-red-600 mb-3 force-red-text uppercase text-sm">
-                    Terms & Conditions
-                  </h3>
-                </div>
-                <ol className="space-y-2 text-sm list-decimal list-inside text-gray-700 leading-relaxed">
+              <div className="flex-1">
+                <h3 className="font-bold text-red-600 mb-3 force-red-text">
+                  TERMS AND CONDITIONS
+                </h3>
+                <ol className="space-y-2 list-inside list-decimal force-black-text text-justify">
                   <li>Payment Validates Order</li>
                   <li>
                     Minimum of 80% initial payment of the total charge required
@@ -563,7 +503,7 @@ const InvoiceApp = () => {
                     the date of initial payment.
                   </li>
                   <li>
-                    Enjoy 3% discount when you make an outright payment (Only
+                    Enjoy 3% discount when you make an outright payment(Only
                     After 3 consecutive outright payments)
                   </li>
                   <li>Payment balance to be paid on or before delivery.</li>
@@ -571,11 +511,16 @@ const InvoiceApp = () => {
                 </ol>
               </div>
             </div>
-          </div>
+          </main>
 
           {/* Footer */}
-          <div className="bg-blue-950 print-bg-blue px-8 py-4 text-center mt-2">
-            <p className="font-bold text-sm text-white tracking-wide">
+          <div className="relative pt-2 mt-auto">
+            <div className="absolute bottom-0 left-0 w-full h-8 bg-black print-bg-black"></div>
+            <div
+              className="absolute bottom-0 right-0 w-56 h-12 bg-red-600 print-bg-red"
+              style={{ clipPath: "polygon(15% 0, 100% 0, 100% 100%, 0 100%)" }}
+            ></div>
+            <p className="px-6 pb-8 font-semibold text-lg text-blue-950 force-blue-text">
               THANK YOU FOR YOUR BUSINESS
             </p>
           </div>
@@ -603,8 +548,8 @@ const InvoiceApp = () => {
       {/* Edit Modal */}
       {isEditModalOpen && editData && (
         <div className="no-print fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl my-8 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl my-8">
+            <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-2xl font-bold">Edit Invoice</h2>
               <button
                 onClick={() => setIsEditModalOpen(false)}
@@ -614,9 +559,9 @@ const InvoiceApp = () => {
               </button>
             </div>
 
-            <div className="p-6 space-y-6">
+            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
               {/* Basic Info */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div>
                   <label className="block text-sm font-semibold mb-2">
                     Invoice No
@@ -661,7 +606,7 @@ const InvoiceApp = () => {
               {/* Bill To */}
               <div>
                 <h3 className="text-lg font-bold mb-3">Bill To</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-3">
                   <div>
                     <label className="block text-sm font-semibold mb-2">
                       Name
@@ -719,8 +664,8 @@ const InvoiceApp = () => {
                       className="p-4 border border-gray-200 rounded-lg"
                     >
                       <div className="flex items-start gap-3">
-                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-4 gap-3">
-                          <div className="sm:col-span-2">
+                        <div className="flex-1 grid grid-cols-3 gap-3">
+                          <div className="col-span-3">
                             <label className="block text-xs font-semibold mb-1">
                               Description
                             </label>
@@ -731,7 +676,7 @@ const InvoiceApp = () => {
                                 handleItemChange(
                                   item.id,
                                   "description",
-                                  e.target.value,
+                                  e.target.value
                                 )
                               }
                               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -748,7 +693,7 @@ const InvoiceApp = () => {
                                 handleItemChange(
                                   item.id,
                                   "price",
-                                  e.target.value,
+                                  e.target.value
                                 )
                               }
                               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -756,7 +701,7 @@ const InvoiceApp = () => {
                           </div>
                           <div>
                             <label className="block text-xs font-semibold mb-1">
-                              Qty
+                              Quantity
                             </label>
                             <input
                               type="number"
@@ -765,6 +710,19 @@ const InvoiceApp = () => {
                                 handleItemChange(item.id, "qty", e.target.value)
                               }
                               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-semibold mb-1">
+                              Total
+                            </label>
+                            <input
+                              type="text"
+                              value={formatCurrency(
+                                calculateLineTotal(item.price, item.qty)
+                              )}
+                              disabled
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-100"
                             />
                           </div>
                         </div>
@@ -782,39 +740,64 @@ const InvoiceApp = () => {
                 </div>
               </div>
 
-              {/* Additional Charges */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold mb-2">
-                    Discount (₦)
-                  </label>
-                  <input
-                    type="number"
-                    value={editData.discount}
-                    onChange={(e) =>
-                      setEditData({
-                        ...editData,
-                        discount: Number(e.target.value) || 0,
-                      })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
+              {/* Discount */}
+              <div>
+                <label className="block text-sm font-semibold mb-2">
+                  Discount (₦)
+                </label>
+                <input
+                  type="number"
+                  value={editData.discount}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      discount: Number(e.target.value) || 0,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">
+                  Delivery Fee (₦)
+                </label>
+                <input
+                  type="number"
+                  value={editData.deliveryFee}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      deliveryFee: Number(e.target.value) || 0,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              {/* Totals Display */}
+              <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">Subtotal:</span>
+                  <span>
+                    {formatCurrency(calculateSubtotal(editData.items))}
+                  </span>
                 </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-2">
-                    Delivery Fee (₦)
-                  </label>
-                  <input
-                    type="number"
-                    value={editData.deliveryFee}
-                    onChange={(e) =>
-                      setEditData({
-                        ...editData,
-                        deliveryFee: Number(e.target.value) || 0,
-                      })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">Discount:</span>
+                  <span>{formatCurrency(editData.discount)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">Delivery Fee:</span>
+                  <span>{formatCurrency(editData.deliveryFee)}</span>
+                </div>
+                <div className="flex justify-between text-lg font-bold border-t pt-2">
+                  <span>Total:</span>
+                  <span>
+                    {formatCurrency(
+                      calculateTotal(editData.items, editData.discount)
+                    )}
+                  </span>
                 </div>
               </div>
 
@@ -852,51 +835,9 @@ const InvoiceApp = () => {
                   ))}
                 </div>
               </div>
-
-              {/* Totals Display */}
-              <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">Subtotal:</span>
-                  <span>
-                    {formatCurrency(calculateSubtotal(editData.items))}
-                  </span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">Discount:</span>
-                  <span>{formatCurrency(editData.discount)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">Delivery Fee:</span>
-                  <span>{formatCurrency(editData.deliveryFee)}</span>
-                </div>
-                <div className="flex justify-between text-sm border-t pt-2">
-                  <span className="font-semibold">VAT (7.5%):</span>
-                  <span>
-                    {formatCurrency(
-                      calculateVAT(
-                        calculateSubtotal(editData.items),
-                        editData.discount,
-                        editData.deliveryFee,
-                      ),
-                    )}
-                  </span>
-                </div>
-                <div className="flex justify-between text-lg font-bold border-t pt-2">
-                  <span>Total:</span>
-                  <span>
-                    {formatCurrency(
-                      calculateTotal(
-                        editData.items,
-                        editData.discount,
-                        editData.deliveryFee,
-                      ),
-                    )}
-                  </span>
-                </div>
-              </div>
             </div>
 
-            <div className="flex justify-end gap-3 p-6 border-t sticky bottom-0 bg-white">
+            <div className="flex justify-end gap-3 p-6 border-t">
               <button
                 onClick={() => setIsEditModalOpen(false)}
                 className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
@@ -917,4 +858,4 @@ const InvoiceApp = () => {
   );
 };
 
-export default InvoiceApp;
+export default Test;
