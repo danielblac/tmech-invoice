@@ -180,6 +180,7 @@ const InvoiceApp = () => {
           @page {
             margin: 0 !important;
             padding: 0 !important;
+            size: A4 portrait;
           }
 
           /* Hide everything except print area */
@@ -332,11 +333,11 @@ const InvoiceApp = () => {
           className="print-area bg-white shadow-lg min-h-[279mm] flex flex-col"
         >
           {/* Modern Clean Header */}
-          <div className="px-8 pt-8 pb-2 border-b-2 border-red-200">
+          <div className="px-2 pt-6 border-b-2 border-red-200">
             <div className="flex justify-between items-start mb-6">
               {/* Logo and Company Info */}
               <div>
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-4">
                   <Image
                     src="/images/t.mech-logo.jpg"
                     alt="T.Mech Exclusive Logo"
@@ -348,13 +349,7 @@ const InvoiceApp = () => {
                     height={446}
                   />
                 </div>
-                <div className="space-y-1 text-sm">
-                  <p>
-                    <strong className="text-gray-900 force-gray-text">
-                      Address:
-                    </strong>{" "}
-                    72, Ojuelegba road, beside GT Bank, Lagos
-                  </p>
+                <div className="space-y-1">
                   <p>
                     <strong className="text-gray-900 force-gray-text">
                       Email:
@@ -375,34 +370,28 @@ const InvoiceApp = () => {
                 <h1 className="text-5xl font-bold mb-2 text-blue-950 force-blue-text">
                   INVOICE
                 </h1>
-                <div className="space-y-2 text-sm">
-                  <p className="text-gray-600 force-light-gray-text">
-                    <span className="font-semibold text-gray-900 force-gray-text">
-                      Invoice No:
-                    </span>{" "}
+                <div className="space-y-1">
+                  <p className="text-gray-900 force-gray-text force-light-gray-text">
+                    <span className="font-semibold">Invoice No:</span>{" "}
                     {invoiceData.invoiceNo}
                   </p>
-                  <p className="text-gray-600 force-light-gray-text">
-                    <span className="font-semibold text-gray-900 force-gray-text">
-                      Invoice Date:
-                    </span>{" "}
+                  <p className="text-gray-900 force-gray-text force-light-gray-text">
+                    <span className="font-semibold">Invoice Date:</span>{" "}
                     {invoiceData.invoiceDate}
                   </p>
-                  <p className="text-gray-600 force-light-gray-text">
-                    <span className="font-semibold text-gray-900 force-gray-text">
-                      Due Date:
-                    </span>{" "}
+                  <p className="text-gray-900 force-gray-text force-light-gray-text">
+                    <span className="font-semibold">Due Date:</span>{" "}
                     {invoiceData.dueDate}
                   </p>
                 </div>
                 <div className="mt-6">
-                  <p className="text-xs font-semibold text-gray-600 mb-1 force-black-text">
+                  <p className="text-sm font-semibold text-gray-600 mb-1 force-black-text">
                     BILL TO
                   </p>
-                  <p className="text-xl font-bold force-black-text">
+                  <p className="text-2xl font-bold force-black-text">
                     {invoiceData.billTo.name}
                   </p>
-                  <p className="text-gray-700 force-black-text text-sm">
+                  <p className="text-gray-700 force-black-text">
                     {invoiceData.billTo.address}
                   </p>
                 </div>
@@ -411,20 +400,20 @@ const InvoiceApp = () => {
           </div>
 
           {/* Items Table */}
-          <div className="px-8 flex-1">
+          <div className="px-2 flex-1">
             <table className="w-full">
               <thead>
                 <tr className="border-b-2 border-red-600">
-                  <th className="text-left py-3 font-bold text-sm uppercase text-blue-950 force-blue-text">
+                  <th className="text-left py-3 font-bold uppercase text-blue-950 force-blue-text">
                     Description
                   </th>
-                  <th className="text-center py-3 font-bold text-sm uppercase text-blue-950 force-blue-text">
+                  <th className="text-center py-3 font-bold uppercase text-blue-950 force-blue-text">
                     Price
                   </th>
-                  <th className="text-center py-3 font-bold text-sm uppercase text-blue-950 force-blue-text">
+                  <th className="text-center py-3 font-bold uppercase text-blue-950 force-blue-text">
                     Qty
                   </th>
-                  <th className="text-right py-3 font-bold text-sm uppercase text-blue-950 force-blue-text">
+                  <th className="text-right py-3 font-bold uppercase text-blue-950 force-blue-text">
                     Subtotal
                   </th>
                 </tr>
@@ -454,13 +443,13 @@ const InvoiceApp = () => {
             </table>
 
             {/* Custom Info and Totals */}
-            <div className="mt-8 flex justify-between gap-8">
+            <div className="mt-6 flex justify-between gap-8">
               {/* Custom Information */}
               <div className="flex-1">
-                <h3 className="font-bold text-blue-950 force-blue-text mb-3 uppercase text-sm">
+                <h3 className="font-bold text-blue-950 force-blue-text mb-3 uppercase">
                   Custom Information
                 </h3>
-                <div className="space-y-1 text-sm text-gray-700 force-gray-text">
+                <div className="space-y-1 text-gray-700 force-gray-text">
                   {invoiceData.customInfo.map((info, index) => (
                     <p key={index}>{info}</p>
                   ))}
@@ -470,25 +459,25 @@ const InvoiceApp = () => {
               {/* Totals */}
               <div className="w-96">
                 <div className="space-y-3">
-                  <div className="flex justify-between text-sm text-blue-950 force-blue-text">
+                  <div className="flex justify-between text-blue-950 force-blue-text">
                     <span>Sub-total:</span>
                     <span className="font-semibold">
                       {formatCurrency(subtotal)}
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm text-blue-950 force-blue-text">
+                  <div className="flex justify-between text-blue-950 force-blue-text">
                     <span>Discount:</span>
                     <span className="font-semibold">
                       {formatCurrency(invoiceData.discount)}
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm text-blue-950 force-blue-text">
+                  <div className="flex justify-between text-blue-950 force-blue-text">
                     <span>Delivery Fee:</span>
                     <span className="font-semibold">
                       {formatCurrency(invoiceData.deliveryFee)}
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm border-t pt-3 text-blue-950 force-blue-text">
+                  <div className="flex justify-between border-t pt-3 text-blue-950 force-blue-text">
                     <span>VAT (7.5%):</span>
                     <span className="font-semibold">{formatCurrency(vat)}</span>
                   </div>
@@ -509,34 +498,28 @@ const InvoiceApp = () => {
               {/* Payment Method */}
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <h3 className="font-bold text-blue-950 force-blue-text uppercase text-sm">
+                  <h3 className="font-bold text-blue-950 force-blue-text uppercase">
                     Payment Method
                   </h3>
                 </div>
-                <div className="space-y-3 text-sm">
+                <div className="space-y-3">
                   <div className="space-y-1">
-                    <p className="text-gray-700 force-light-gray-text">
-                      <span className="font-semibold text-gray-900 force-gray-text">
-                        Account No:
-                      </span>{" "}
+                    <p className="text-gray-900 force-gray-text">
+                      <span className="font-semibold">Account No:</span>{" "}
                       6571460376
                     </p>
                     <p className="text-gray-700 force-light-gray-text">
-                      <span className="font-semibold text-gray-900 force-gray-text">
-                        Account Name:
-                      </span>{" "}
+                      <span className="font-semibold">Account Name:</span>{" "}
                       T-MECH EXCLUSIVE SERVICES
                     </p>
                     <p className="text-gray-700 force-light-gray-text">
-                      <span className="font-semibold text-gray-900 force-gray-text">
-                        Bank Name:
-                      </span>{" "}
+                      <span className="font-semibold">Bank Name:</span>{" "}
                       MONIEPOINT
                     </p>
                   </div>
 
-                  <div className="pt-3 mt-22">
-                    <p className="font-bold text-red-600 mb-3 force-red-text text-xs uppercase">
+                  <div className="pt-5 mt-22">
+                    <p className="font-bold text-red-600 mb-3 force-red-text text-sm uppercase">
                       Note:
                     </p>
                     <p className="font-bold text-gray-900 mt-1">
@@ -549,11 +532,11 @@ const InvoiceApp = () => {
               {/* Terms and Conditions */}
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-red-600 mb-3 force-red-text uppercase text-sm">
+                  <h3 className="font-bold text-red-600 mb-3 force-red-text uppercase">
                     Terms & Conditions
                   </h3>
                 </div>
-                <ol className="space-y-2 text-sm list-decimal list-inside text-gray-700 leading-relaxed">
+                <ol className="space-y-1 list-decimal list-inside text-gray-700 leading-relaxed">
                   <li>Payment Validates Order</li>
                   <li>
                     Minimum of 80% initial payment of the total charge required
@@ -574,7 +557,7 @@ const InvoiceApp = () => {
           </div>
 
           {/* Footer */}
-          <div className="bg-blue-950 print-bg-blue px-8 py-4 text-center mt-2">
+          <div className="bg-blue-950 print-bg-blue px-2 py-4 text-center mt-2">
             <p className="font-bold text-sm text-white tracking-wide">
               THANK YOU FOR YOUR BUSINESS
             </p>
