@@ -228,16 +228,6 @@ const InvoiceApp = () => {
             -webkit-text-fill-color: #000000 !important;
           }
 
-          .force-gray-text {
-            color: #101828 !important;
-            -webkit-text-fill-color: #101828 !important;
-          }
-
-          .force-light-gray-text {
-            color: #4a5565 !important;
-            -webkit-text-fill-color: #4a5565 !important;
-          }
-
           .force-blue-text {
             color: #172554 !important;
             -webkit-text-fill-color: #172554 !important;
@@ -351,15 +341,11 @@ const InvoiceApp = () => {
                 </div>
                 <div className="space-y-1">
                   <p>
-                    <strong className="text-gray-900 force-gray-text">
-                      Email:
-                    </strong>{" "}
+                    <strong className="force-black-text">Email:</strong>{" "}
                     taylor.mechanic018@gmail.com
                   </p>
                   <p>
-                    <strong className="text-gray-900 force-gray-text">
-                      Phone:
-                    </strong>{" "}
+                    <strong className="force-black-text">Phone:</strong>{" "}
                     +2349057336051
                   </p>
                 </div>
@@ -371,27 +357,27 @@ const InvoiceApp = () => {
                   INVOICE
                 </h1>
                 <div className="space-y-1">
-                  <p className="text-gray-900 force-gray-text force-light-gray-text">
+                  <p className="force-black-text">
                     <span className="font-semibold">Invoice No:</span>{" "}
                     {invoiceData.invoiceNo}
                   </p>
-                  <p className="text-gray-900 force-gray-text force-light-gray-text">
+                  <p className="force-black-text">
                     <span className="font-semibold">Invoice Date:</span>{" "}
                     {invoiceData.invoiceDate}
                   </p>
-                  <p className="text-gray-900 force-gray-text force-light-gray-text">
+                  <p className="force-black-text">
                     <span className="font-semibold">Due Date:</span>{" "}
                     {invoiceData.dueDate}
                   </p>
                 </div>
                 <div className="mt-6">
-                  <p className="text-sm font-semibold text-gray-600 mb-1 force-black-text">
+                  <p className="text-sm font-semibold mb-1 text-blue-950 force-blue-text">
                     BILL TO
                   </p>
                   <p className="text-2xl font-bold force-black-text">
                     {invoiceData.billTo.name}
                   </p>
-                  <p className="text-gray-700 force-black-text">
+                  <p className="force-black-text">
                     {invoiceData.billTo.address}
                   </p>
                 </div>
@@ -421,16 +407,16 @@ const InvoiceApp = () => {
               <tbody>
                 {invoiceData.items.map((item) => (
                   <tr key={item.id} className="border-b border-gray-200">
-                    <td className="py-4 text-gray-900 force-gray-text">
+                    <td className="py-4 force-black-text">
                       {item.description}
                     </td>
-                    <td className="py-4 text-center text-gray-700 force-gray-text">
+                    <td className="py-4 text-center force-black-text">
                       ₦{item.price.toLocaleString()}
                     </td>
-                    <td className="py-4 text-center text-gray-700 force-gray-text">
+                    <td className="py-4 text-center force-black-text">
                       {item.qty}
                     </td>
-                    <td className="py-4 text-right font-semibold text-gray-900 force-gray-text">
+                    <td className="py-4 text-right font-semibold force-black-text">
                       ₦
                       {calculateLineTotal(
                         item.price,
@@ -449,7 +435,7 @@ const InvoiceApp = () => {
                 <h3 className="font-bold text-blue-950 force-blue-text mb-3 uppercase">
                   Custom Information
                 </h3>
-                <div className="space-y-1 text-gray-700 force-gray-text">
+                <div className="space-y-1 force-black-text">
                   {invoiceData.customInfo.map((info, index) => (
                     <p key={index}>{info}</p>
                   ))}
@@ -504,16 +490,16 @@ const InvoiceApp = () => {
                 </div>
                 <div className="space-y-3">
                   <div className="space-y-1">
-                    <p className="text-gray-900 force-gray-text">
-                      <span className="font-semibold">Account No:</span>{" "}
+                    <p className="force-black-text font-semibold">
+                      <span>Account No:</span>{" "}
                       6571460376
                     </p>
-                    <p className="text-gray-700 force-light-gray-text">
-                      <span className="font-semibold">Account Name:</span>{" "}
+                    <p className="font-semibold">
+                      <span>Account Name:</span>{" "}
                       T-MECH EXCLUSIVE SERVICES
                     </p>
-                    <p className="text-gray-700 force-light-gray-text">
-                      <span className="font-semibold">Bank Name:</span>{" "}
+                    <p className="font-semibold">
+                      <span>Bank Name:</span>{" "}
                       MONIEPOINT
                     </p>
                   </div>
@@ -536,7 +522,7 @@ const InvoiceApp = () => {
                     Terms & Conditions
                   </h3>
                 </div>
-                <ol className="space-y-1 list-decimal list-inside text-gray-700 leading-relaxed">
+                <ol className="space-y-1 list-decimal list-inside  leading-relaxed">
                   <li>Payment Validates Order</li>
                   <li>
                     Minimum of 80% initial payment of the total charge required
@@ -591,7 +577,7 @@ const InvoiceApp = () => {
               <h2 className="text-2xl font-bold">Edit Invoice</h2>
               <button
                 onClick={() => setIsEditModalOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 hover:"
               >
                 <X size={24} />
               </button>
